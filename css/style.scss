@@ -1,0 +1,96 @@
+$font-base: Calibri, Candara, Segoe, 'Segoe UI';
+$font-georgia: Georgia, "New Century Schoolbook", "Nimbus Roman No9 L", serif;
+$sepiaBg: #f0e2c7;
+
+// font sizes
+$size21: 21px;
+$size17: 17px;
+$size13: 13px;
+
+@mixin clearfix {
+	zoom: 1;
+
+	&:before,
+	&:after {
+		content: "";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+body {
+	background: #333;
+	font-family: $font-base;
+	font-size: $size13;
+	font-weight: 100;
+	color: #333;
+}
+
+table {
+	width: 100%;
+
+	td {
+		border: 1px solid #ccc;
+		text-align: center;
+		padding: 5px;
+	}
+}
+
+h1 {
+	font-size: 30px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+h2 {
+	font-size: $size21;
+}
+
+h3 {
+	font-size: $size17;
+}
+
+h4 {
+	font-size: $size13;
+}
+
+.Wrapper {
+	background: white;
+	margin: 0 auto;
+	width: 1000px;
+	padding: 40px;
+	min-height: 600px;
+}
+
+.UserDetails {
+	background: #f5f5f5;
+	min-height: 200px;
+	padding: 20px;
+
+	.UserDetails_getDetails {
+
+		border-bottom: 1px solid #ccc;
+		padding-bottom: 40px;
+		margin-bottom: 40px;
+
+		h3 {
+			margin-bottom: 20px;
+		}
+
+		textarea {
+			// margin: 20px;
+			min-height: 100px; min-width: 100%;
+		}
+
+		button {
+			margin-top: 20px;
+			padding: 3px 8px;
+			font-size: $size17;
+			cursor: pointer;
+		}
+	}
+}
+
+
