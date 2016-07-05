@@ -6,6 +6,7 @@ $sepiaBg: #f0e2c7;
 $size21: 21px;
 $size17: 17px;
 $size13: 13px;
+$size9: 9px;
 
 @mixin clearfix {
 	zoom: 1;
@@ -56,6 +57,11 @@ h4 {
 	font-size: $size13;
 }
 
+h5 {
+	font-size: $size9;
+	color: #999;
+}
+
 .Wrapper {
 	background: white;
 	margin: 0 auto;
@@ -76,7 +82,13 @@ h4 {
 		margin-bottom: 40px;
 
 		h3 {
+			// margin-bottom: 20px;
+		}
+
+		h4 {
+			// margin: 20px;
 			margin-bottom: 20px;
+			color: #999;
 		}
 
 		textarea {

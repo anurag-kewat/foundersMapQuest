@@ -1,24 +1,33 @@
 window.Main = class Main
 	constructor: () ->
-		@getUsersDataOnPageLoad()
+		# @getUsersDataOnPageLoad()
+		@allDataFromCSV =  @getCSVStoredDataArray()
+
+		@spotPredefinedData()
 
 	init: ->
-		$("body").on "click", "#submitInput", (e) ->
+		$("body").on "click", "#submitInput", (e) =>
 			inputText = $("#inputTextArea").val()
 			inputData = $.csv.toObjects(inputText)
-			# console.log inputData
+			html = @generateTable(inputData)
+			$("#locationTable").html(html);
 
-	getUsersDataOnPageLoad: ->
+	getCSVStoredDataArray: ->
+		dataArray = []
 		$.ajax(
 			type: "GET",
 			async: false,
 			url: "data/sample.csv",
 			dataType: "text",
 			success: (csvdata) =>
-				data = $.csv.toObjects(csvdata);
-				html = @generateTable(data)
-				$("#locationTable").html(html);
+				dataArray = $.csv.toObjects(csvdata)
 		)
+		dataArray;
+
+	getUsersDataOnPageLoad: ->
+		dataArray = @getCSVStoredDataArray()
+		html = @generateTable(dataArray)
+		$("#locationTable").html(html);
 
 	generateTable: (data) ->
 		requiredHtml = "";
@@ -55,4 +64,30 @@ window.Main = class Main
 		html += "</tbody>"
 		return html;
 
+	getGeoLocations: ->
+		valuesAr = []
+		$.each @allDataFromCSV, (i, row) =>
+			values = {
+				"lat": row["Garage Latitude"]
+				"lng": row["Garage Longitude"]
+			}
+			valuesAr.push(values)
+		valuesAr
 
+	spotPredefinedData: =>
+		google.maps.event.addDomListener window, 'load', @initializeMap
+
+	initializeMap: =>
+		infoWindow = @getGeoLocations()[0]
+		position = new google.maps.LatLng(infoWindow.lat, infoWindow.lng)
+		mapProp = 
+				center: position
+				zoom: 10
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+		map = new google.maps.Map(document.getElementById("googleMap"), mapProp)
+
+		$.each @getGeoLocations(), (i, location) ->	
+			marker = new google.maps.Marker
+				position: new google.maps.LatLng(location.lat, location.lng)
+			marker.setMap(map);
+		return
