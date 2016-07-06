@@ -6,21 +6,73 @@
   window.Main = Main = (function() {
     function Main() {
       this.initializeMap = bind(this.initializeMap, this);
-      this.spotPredefinedData = bind(this.spotPredefinedData, this);
-      this.allDataFromCSV = this.getCSVStoredDataArray();
-      this.spotPredefinedData();
+      this.intializeDefaultMap = bind(this.intializeDefaultMap, this);
+      this.map;
+      this.latColumn = "Garage Latitude";
+      this.lngColumn = "Garage Longitude";
+      this.userInputData = "";
+      this.userDetailsSection = ".UserDetails_section";
+      this.allData = this.getCSVStoredDataArray();
+      this.intializeDefaultMap();
     }
 
     Main.prototype.init = function() {
-      return $("body").on("click", "#submitInput", (function(_this) {
+      $("body").on("click", "#submitInput", (function(_this) {
         return function(e) {
-          var html, inputData, inputText;
+          var inputText;
           inputText = $("#inputTextArea").val();
-          inputData = $.csv.toObjects(inputText);
-          html = _this.generateTable(inputData);
-          return $("#locationTable").html(html);
+          if (inputText !== "") {
+            _this.userInputData = $.csv.toObjects(inputText);
+            _this.getHtmlForSelectingLatLng();
+            $(_this.userDetailsSection).removeClass("active");
+            return $(".UserDetails_configDetails").addClass("active");
+          }
         };
       })(this));
+      $("body").on("click", "#submitConfig", (function(_this) {
+        return function(e) {
+          var html;
+          _this.latColumn = $("#configTable").find("input[type='radio'][name='latitude']:checked").attr("value");
+          _this.lngColumn = $("#configTable").find("input[type='radio'][name='longitude']:checked").attr("value");
+          if (_this.latColumn !== void 0 && _this.lngColumn !== void 0) {
+            html = _this.generateTable(_this.userInputData);
+            $("#locationTable").html(html);
+            $(_this.userDetailsSection).removeClass("active");
+            return $(".UserDetails_dataTable").addClass("active");
+          }
+        };
+      })(this));
+      $("body").on("click", ".UserDetails_prev", (function(_this) {
+        return function(e) {
+          var prevSection;
+          prevSection = $(e.target).parent(_this.userDetailsSection).prev(_this.userDetailsSection);
+          $(_this.userDetailsSection).removeClass("active");
+          return prevSection.addClass("active");
+        };
+      })(this));
+      return $("body").on("click", "#submitData", (function(_this) {
+        return function(e) {
+          _this.allData = _this.userInputData;
+          _this.getMarkersOnMap(_this.map);
+          $(_this.userDetailsSection).removeClass("active");
+          return $(".UserDetails_done").addClass("active");
+        };
+      })(this));
+    };
+
+    Main.prototype.getHtmlForSelectingLatLng = function() {
+      var html, item, keysAr;
+      $("#configTable").empty();
+      html = "";
+      html += "<tr> <td></td> <td>Latitude</td> <td>Longitude</td> </tr>";
+      keysAr = Object.keys(this.userInputData[0]);
+      for (item in keysAr) {
+        html += "<tr><td>" + keysAr[item] + "</td>";
+        html += "<td><input type='radio' name='latitude' value='" + keysAr[item] + "' /></td>";
+        html += "<td><input type='radio' name='longitude' value='" + keysAr[item] + "' /></td>";
+        html += "</tr>\r\n";
+      }
+      return $(html).appendTo("#configTable");
     };
 
     Main.prototype.getCSVStoredDataArray = function() {
@@ -93,12 +145,12 @@
     Main.prototype.getGeoLocations = function() {
       var valuesAr;
       valuesAr = [];
-      $.each(this.allDataFromCSV, (function(_this) {
+      $.each(this.allData, (function(_this) {
         return function(i, row) {
           var values;
           values = {
-            "lat": row["Garage Latitude"],
-            "lng": row["Garage Longitude"]
+            "lat": row[_this.latColumn],
+            "lng": row[_this.lngColumn]
           };
           return valuesAr.push(values);
         };
@@ -106,12 +158,12 @@
       return valuesAr;
     };
 
-    Main.prototype.spotPredefinedData = function() {
+    Main.prototype.intializeDefaultMap = function() {
       return google.maps.event.addDomListener(window, 'load', this.initializeMap);
     };
 
     Main.prototype.initializeMap = function() {
-      var infoWindow, map, mapProp, position;
+      var infoWindow, mapProp, position;
       infoWindow = this.getGeoLocations()[0];
       position = new google.maps.LatLng(infoWindow.lat, infoWindow.lng);
       mapProp = {
@@ -119,7 +171,11 @@
         zoom: 10,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-      map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+      this.map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+      return this.getMarkersOnMap(this.map);
+    };
+
+    Main.prototype.getMarkersOnMap = function(map) {
       $.each(this.getGeoLocations(), function(i, location) {
         var marker;
         marker = new google.maps.Marker({

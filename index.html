@@ -9,23 +9,41 @@
 	<div class="Wrapper">
 	<h1>Founder Map Quest</h1>
 
-		<div class="" id="googleMap" style="width: 100%; height:380px; margin-bottom: 50px;">
+		<div class="GoogleMap" id="googleMap">
 
 		</div>
 
 		<div class="UserDetails">
 
-			<div class="UserDetails_getDetails">
+			<div id="enterDetails" class="UserDetails_section UserDetails_getDetails active">
 				<h3>Enter details of your Idea/Startup:</h3>
 				<h4>(Eg. - Id, Company Name, Founder, City, Country, Postal Code, Street, Photo, Home Page, Garage Latitude, Garage Longitude)</h4>
 				<textarea id="inputTextArea" placeholder="Enter Details of your Ideas or Startup" class="GetDetails_input"></textarea>
 				<button id="submitInput" type="submit">Next</button>
 			</div>
 
-			<table id="locationTable">
-				
-			</table>
+			<div id="configDetails" class="UserDetails_section UserDetails_configDetails">
+				<h3>Select which column would be Latitude and Longitude:</h3>
+				<table id="configTable">
+					
+				</table>
+				<button id="" class="UserDetails_prev" type="submit">Previous</button>
+				<button id="submitConfig" type="submit">Next</button>
+			</div>
+
+			<div class="DataTable UserDetails_section UserDetails_dataTable">
+				<table id="locationTable"></table>
+				<button id="" class="UserDetails_prev" type="submit">Previous</button>
+				<button id="submitData" type="submit">Submit</button>
+			</div>
+
+			<div class="UserDetails_section UserDetails_done">
+				<h2>Your entries has been listed on our Map, Thanks !!</h2>
+			</div>
 		</div>
+
+		
+		
 	</div>
 
 	<script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
@@ -39,7 +57,7 @@
 		window.Main = window.Main || {};
 		$(document).ready(function() {
 			var main = new Main();
-			// main.init();
+			main.init();
 		});
 	</script>
 </body>

@@ -1,16 +1,63 @@
 window.Main = class Main
 	constructor: () ->
-		# @getUsersDataOnPageLoad()
-		@allDataFromCSV =  @getCSVStoredDataArray()
+		@map
+		@latColumn = "Garage Latitude"
+		@lngColumn = "Garage Longitude"
 
-		@spotPredefinedData()
+		@userInputData = ""
+
+		@userDetailsSection = ".UserDetails_section"
+
+		# @getUsersDataOnPageLoad()
+		@allData =  @getCSVStoredDataArray()
+
+		@intializeDefaultMap()
 
 	init: ->
 		$("body").on "click", "#submitInput", (e) =>
 			inputText = $("#inputTextArea").val()
-			inputData = $.csv.toObjects(inputText)
-			html = @generateTable(inputData)
-			$("#locationTable").html(html);
+			unless inputText is ""
+				@userInputData = $.csv.toObjects(inputText)
+				@getHtmlForSelectingLatLng()
+				$(@userDetailsSection).removeClass("active")
+				$(".UserDetails_configDetails").addClass("active")
+
+		$("body").on "click", "#submitConfig", (e) =>
+			@latColumn = $("#configTable").find("input[type='radio'][name='latitude']:checked").attr("value")
+			@lngColumn = $("#configTable").find("input[type='radio'][name='longitude']:checked").attr("value")
+			if @latColumn isnt undefined and @lngColumn isnt undefined
+				html = @generateTable(@userInputData)
+				$("#locationTable").html(html);
+				$(@userDetailsSection).removeClass("active")
+				$(".UserDetails_dataTable").addClass("active")
+
+		$("body").on "click", ".UserDetails_prev", (e) =>
+			prevSection = $(e.target).parent(@userDetailsSection).prev(@userDetailsSection)
+			$(@userDetailsSection).removeClass("active")
+			prevSection.addClass("active")
+
+		$("body").on "click", "#submitData", (e) =>
+			@allData = @userInputData
+			@getMarkersOnMap(@map)
+			$(@userDetailsSection).removeClass("active")
+			$(".UserDetails_done").addClass("active")
+
+
+	getHtmlForSelectingLatLng: -> 
+		$("#configTable").empty()
+		html = ""
+		html += "<tr>
+					<td></td>
+					<td>Latitude</td>
+					<td>Longitude</td>
+				</tr>";
+		keysAr = Object.keys(@userInputData[0])
+		for item of keysAr
+			html += "<tr><td>" + keysAr[item] + "</td>";
+			html += "<td><input type='radio' name='latitude' value='" + keysAr[item] + "' /></td>";
+			html += "<td><input type='radio' name='longitude' value='" + keysAr[item] + "' /></td>";
+			html += "</tr>\r\n";
+		$(html).appendTo("#configTable")
 
 	getCSVStoredDataArray: ->
 		dataArray = []
@@ -66,15 +113,15 @@ window.Main = class Main
 
 	getGeoLocations: ->
 		valuesAr = []
-		$.each @allDataFromCSV, (i, row) =>
+		$.each @allData, (i, row) =>
 			values = {
-				"lat": row["Garage Latitude"]
-				"lng": row["Garage Longitude"]
+				"lat": row[@latColumn]
+				"lng": row[@lngColumn]
 			}
 			valuesAr.push(values)
 		valuesAr
 
-	spotPredefinedData: =>
+	intializeDefaultMap: =>
 		google.maps.event.addDomListener window, 'load', @initializeMap
 
 	initializeMap: =>
@@ -84,8 +131,10 @@ window.Main = class Main
 				center: position
 				zoom: 10
 				mapTypeId: google.maps.MapTypeId.ROADMAP
-		map = new google.maps.Map(document.getElementById("googleMap"), mapProp)
+		@map = new google.maps.Map(document.getElementById("googleMap"), mapProp)
+		@getMarkersOnMap(@map)
 
+	getMarkersOnMap: (map) ->
 		$.each @getGeoLocations(), (i, location) ->	
 			marker = new google.maps.Marker
 				position: new google.maps.LatLng(location.lat, location.lng)
