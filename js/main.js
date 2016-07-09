@@ -10,6 +10,7 @@
       this.map;
       this.latColumn = "Garage Latitude";
       this.lngColumn = "Garage Longitude";
+      this.markLabel = "Founder";
       this.userInputData = "";
       this.userDetailsSection = ".UserDetails_section";
       this.allData = this.getCSVStoredDataArray();
@@ -36,7 +37,8 @@
           var html;
           _this.latColumn = $("#configTable").find("input[type='radio'][name='latitude']:checked").attr("value");
           _this.lngColumn = $("#configTable").find("input[type='radio'][name='longitude']:checked").attr("value");
-          if (_this.latColumn !== void 0 && _this.lngColumn !== void 0) {
+          _this.markLabel = $("#configTable").find("input[type='radio'][name='markerLabel']:checked").attr("value");
+          if (_this.latColumn !== void 0 && _this.lngColumn !== void 0 && _this.markLabel !== void 0) {
             _this.addPropInObjects();
             html = _this.generateTable(_this.userInputData);
             $("#locationTable").html(html);
@@ -91,12 +93,13 @@
       var html, item, keysAr;
       $("#configTable").empty();
       html = "";
-      html += "<tr> <td></td> <td>Latitude</td> <td>Longitude</td> </tr>";
+      html += "<tr> <td></td> <td>Latitude</td> <td>Longitude</td> <td>Marker Label</td> </tr>";
       keysAr = Object.keys(this.userInputData[0]);
       for (item in keysAr) {
         html += "<tr><td>" + keysAr[item] + "</td>";
         html += "<td><input type='radio' name='latitude' value='" + keysAr[item] + "' /></td>";
         html += "<td><input type='radio' name='longitude' value='" + keysAr[item] + "' /></td>";
+        html += "<td><input type='radio' name='markerLabel' value='" + keysAr[item] + "' /></td>";
         html += "</tr>\r\n";
       }
       return $(html).appendTo("#configTable");
@@ -181,7 +184,8 @@
           var values;
           values = {
             "lat": row[_this.latColumn],
-            "lng": row[_this.lngColumn]
+            "lng": row[_this.lngColumn],
+            "label": row[_this.markLabel]
           };
           if (row["Display on Map"] === "yes") {
             return valuesAr.push(values);
@@ -201,7 +205,7 @@
       position = new google.maps.LatLng(infoWindow.lat, infoWindow.lng);
       mapProp = {
         center: position,
-        zoom: 10,
+        zoom: 5,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       this.map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
@@ -210,11 +214,15 @@
 
     Main.prototype.getMarkersOnMap = function(map) {
       $.each(this.getGeoLocations(), function(i, location) {
-        var marker;
+        var infowindow, marker;
         marker = new google.maps.Marker({
           position: new google.maps.LatLng(location.lat, location.lng)
         });
-        return marker.setMap(map);
+        marker.setMap(map);
+        infowindow = new google.maps.InfoWindow({
+          content: location.label
+        });
+        return infowindow.open(map, marker);
       });
     };
 

@@ -3,6 +3,7 @@ window.Main = class Main
 		@map
 		@latColumn = "Garage Latitude"
 		@lngColumn = "Garage Longitude"
+		@markLabel = "Founder"
 
 		@userInputData = ""
 		@userDetailsSection = ".UserDetails_section"
@@ -27,8 +28,9 @@ window.Main = class Main
 		$("body").on "click", "#submitConfig", (e) =>
 			@latColumn = $("#configTable").find("input[type='radio'][name='latitude']:checked").attr("value")
 			@lngColumn = $("#configTable").find("input[type='radio'][name='longitude']:checked").attr("value")
+			@markLabel = $("#configTable").find("input[type='radio'][name='markerLabel']:checked").attr("value")
 
-			if @latColumn isnt undefined and @lngColumn isnt undefined
+			if @latColumn isnt undefined and @lngColumn isnt undefined and @markLabel isnt undefined
 				@addPropInObjects()
 				html = @generateTable(@userInputData)
 				$("#locationTable").html(html);
@@ -71,12 +73,14 @@ window.Main = class Main
 					<td></td>
 					<td>Latitude</td>
 					<td>Longitude</td>
+					<td>Marker Label</td>
 				</tr>";
 		keysAr = Object.keys(@userInputData[0])
 		for item of keysAr
 			html += "<tr><td>" + keysAr[item] + "</td>";
 			html += "<td><input type='radio' name='latitude' value='" + keysAr[item] + "' /></td>";
 			html += "<td><input type='radio' name='longitude' value='" + keysAr[item] + "' /></td>";
+			html += "<td><input type='radio' name='markerLabel' value='" + keysAr[item] + "' /></td>";
 			html += "</tr>\r\n";
 		$(html).appendTo("#configTable")
 
@@ -139,8 +143,9 @@ window.Main = class Main
 		valuesAr = []
 		$.each @allData, (i, row) =>
 			values = {
-				"lat": row[@latColumn]
-				"lng": row[@lngColumn]
+				"lat":   row[@latColumn]
+				"lng":   row[@lngColumn]
+				"label": row[@markLabel]
 			}
 			if row["Display on Map"] is "yes"
 				valuesAr.push(values)
@@ -154,7 +159,7 @@ window.Main = class Main
 		position = new google.maps.LatLng(infoWindow.lat, infoWindow.lng)
 		mapProp = 
 				center: position
-				zoom: 10
+				zoom: 5
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 		@map = new google.maps.Map(document.getElementById("googleMap"), mapProp)
 		@getMarkersOnMap(@map)
@@ -162,8 +167,12 @@ window.Main = class Main
 	getMarkersOnMap: (map) ->
 		$.each @getGeoLocations(), (i, location) ->	
 			marker = new google.maps.Marker
-				position: new google.maps.LatLng(location.lat, location.lng)
+				position: new google.maps.LatLng(location.lat, location.lng),
+				# animation: google.maps.Animation.BOUNCE
 			marker.setMap(map);
+			infowindow = new google.maps.InfoWindow
+				content: location.label
+			infowindow.open(map, marker);
 		return
 
 
