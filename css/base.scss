@@ -8,6 +8,12 @@ $size17: 17px;
 $size13: 13px;
 $size9: 9px;
 
+$grey1: #333;
+$grey2: #666;
+$grey3: #999;
+$grey4: #ccc;
+$grey5: #eee;
+
 @mixin respond-to($type, $media:none) {
 	$ielt9:	false !default; // !default means it will be overwritten if defined in IE specific stylesheet
 
@@ -47,7 +53,7 @@ $size9: 9px;
 }
 
 body {
-	background: #333;
+	background: #eee;
 	font-family: $font-base;
 	font-size: $size13;
 	font-weight: 100;
@@ -66,7 +72,7 @@ table {
 
 h1 {
 	font-size: 30px;
-	font-weight: bold;
+	// font-weight: bold;
 	margin-bottom: 20px;
 }
 
@@ -88,11 +94,20 @@ h5 {
 	color: #999;
 }
 
-button {
-	margin-top: 20px;
-	padding: 3px 8px;
+button,
+input[type="button"] {
+
+	padding: 3px 10px;
+	background: white;
+	border: 2px solid $grey2;
+	color: $grey2;
 	font-size: $size13;
 	cursor: pointer;
+
+	&:hover {
+		border-color: $grey1;
+		color: $grey1;
+	}
 }
 
 

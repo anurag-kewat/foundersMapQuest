@@ -7,43 +7,53 @@
 </head>
 <body>
 	<div class="Wrapper">
-	<h1>Founder Map Quest</h1>
+		<div class="ContentHeader">
+			<h1>Founder Map Quest</h1>
+			<input type="button" id="openUserScreen" name="" value="Put your Listing" />
+		</div>
+	
 
 		<div class="GoogleMap" id="googleMap">
 
 		</div>
 
-		<div class="UserDetails">
+		<div class="Popup">
+            <div class="TransparentBg"></div>
+            <div class="Popup_container">
+                <div class="Popup_header">
+                    <!-- <h2>Enter Details</h2> -->
+                    <a href="javascript:void(0)" class="PanelCloseBtn"></a>
+                </div>
+				<div class="Popup_content UserDetails">
 
-			<div id="enterDetails" class="UserDetails_section UserDetails_getDetails active">
-				<h3>Enter details of your Idea/Startup:</h3>
-				<h4>(Eg. - Id, Company Name, Founder, City, Country, Postal Code, Street, Photo, Home Page, Garage Latitude, Garage Longitude)</h4>
-				<textarea id="inputTextArea" placeholder="Enter Details of your Ideas or Startup" class="GetDetails_input"></textarea>
-				<button id="submitInput" type="submit">Next</button>
+					<div id="enterDetails" class="UserDetails_section UserDetails_getDetails active">
+						<h3>Enter details of your Idea/Startup:</h3>
+						<h4>(Eg. - Id, Company Name, Founder, City, Country, Postal Code, Street, Photo, Home Page, Garage Latitude, Garage Longitude)</h4>
+						<textarea id="inputTextArea" placeholder="Enter Details of your Ideas or Startup" class="GetDetails_input"></textarea>
+						<button id="submitInput" type="submit">Next</button>
+					</div>
+
+					<div id="configDetails" class="UserDetails_section UserDetails_configDetails">
+						<h3>Select which column would be Latitude and Longitude:</h3>
+						<table id="configTable">
+							
+						</table>
+						<button id="" class="UserDetails_prev" type="submit">Previous</button>
+						<button id="submitConfig" type="submit">Next</button>
+					</div>
+
+					<div class="DataTable UserDetails_section UserDetails_dataTable">
+						<table id="locationTable"></table>
+						<button id="" class="UserDetails_prev" type="submit">Previous</button>
+						<button id="submitData" type="submit">Submit</button>
+					</div>
+
+					<div class="UserDetails_section UserDetails_done">
+						<h2>Your entries has been listed on our Map, Thanks !!</h2>
+					</div>
+				</div>
 			</div>
-
-			<div id="configDetails" class="UserDetails_section UserDetails_configDetails">
-				<h3>Select which column would be Latitude and Longitude:</h3>
-				<table id="configTable">
-					
-				</table>
-				<button id="" class="UserDetails_prev" type="submit">Previous</button>
-				<button id="submitConfig" type="submit">Next</button>
-			</div>
-
-			<div class="DataTable UserDetails_section UserDetails_dataTable">
-				<table id="locationTable"></table>
-				<button id="" class="UserDetails_prev" type="submit">Previous</button>
-				<button id="submitData" type="submit">Submit</button>
-			</div>
-
-			<div class="UserDetails_section UserDetails_done">
-				<h2>Your entries has been listed on our Map, Thanks !!</h2>
-			</div>
-		</div>
-
-		
-		
+		</div>		
 	</div>
 
 	<script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
@@ -52,6 +62,7 @@
 	<script src="http://maps.googleapis.com/maps/api/js"></script>
 
 	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/popup.js"></script>
 
 	<script type="text/javascript">
 		window.Main = window.Main || {};

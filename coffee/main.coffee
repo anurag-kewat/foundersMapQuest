@@ -5,13 +5,15 @@ window.Main = class Main
 		@lngColumn = "Garage Longitude"
 
 		@userInputData = ""
-
 		@userDetailsSection = ".UserDetails_section"
 
 		# @getUsersDataOnPageLoad()
 		@allData =  @getCSVStoredDataArray()
-
 		@intializeDefaultMap()
+
+		@excludeParams = ["id", "Display on Map"]
+
+		@popup = new Popup(@userDetailsSection, ".UserDetails_getDetails")
 
 	init: ->
 		$("body").on "click", "#submitInput", (e) =>
@@ -25,7 +27,9 @@ window.Main = class Main
 		$("body").on "click", "#submitConfig", (e) =>
 			@latColumn = $("#configTable").find("input[type='radio'][name='latitude']:checked").attr("value")
 			@lngColumn = $("#configTable").find("input[type='radio'][name='longitude']:checked").attr("value")
+
 			if @latColumn isnt undefined and @lngColumn isnt undefined
+				@addPropInObjects()
 				html = @generateTable(@userInputData)
 				$("#locationTable").html(html);
 				$(@userDetailsSection).removeClass("active")
@@ -37,10 +41,27 @@ window.Main = class Main
 			prevSection.addClass("active")
 
 		$("body").on "click", "#submitData", (e) =>
+			@removeItemsWhichNotChecked()
 			@allData = @userInputData
 			@getMarkersOnMap(@map)
 			$(@userDetailsSection).removeClass("active")
 			$(".UserDetails_done").addClass("active")
+			setTimeout (=>
+				@popup.closePopup()
+			), 800	
+
+
+	addPropInObjects: ->
+		for item of @userInputData
+			@userInputData[item]["id"] = item
+			@userInputData[item]["Display on Map"] = "yes"
+
+	removeItemsWhichNotChecked: ->
+		$(".DataTable_displayCheck").not(":checked").each (i, check) =>
+			disableItem =  $(check).attr("id")
+			@userInputData[disableItem]["Display on Map"] = "no"
+			return
+		return
 
 
 	getHtmlForSelectingLatLng: -> 
@@ -84,19 +105,20 @@ window.Main = class Main
 
 		keysAr = Object.keys(data[0])
 		requiredHtml += @gettingHeader(keysAr) # getting header
-		requiredHtml += @gettingRows(data) # getting rows
+		requiredHtml += @gettingRows(data, keysAr) # getting rows
 		return requiredHtml;
 
 	gettingHeader: (keysAr) ->
 		html = ""
 		html += "<thead><tr>\r\n";
 		for item of keysAr
-			html += "<td>" + keysAr[item] + "</td>\r\n";
+			if $.inArray(keysAr[item], @excludeParams) is -1
+				html += "<td>" + keysAr[item] + "</td>\r\n";
 		html += "<td>Active/Inactive</td>"; 
 		html += "</tr></thead>\r\n";
 		return html;
 
-	gettingRows: (data) ->
+	gettingRows: (data, keysAr) ->
 		html = ""
 		html += "<tbody>"
 		i = 0
@@ -104,8 +126,10 @@ window.Main = class Main
 			values = Object.values(data[i])
 			html = html + '<tr>\u000d\n'
 			for val of values
-				html += '<td>' + values[val] + '</td>\u000d\n'
-			html += '<td><input type=\'checkbox\' id=\'' + values[0] + '\'></td>'
+				if $.inArray(keysAr[val], @excludeParams) is -1
+					html += '<td>' + values[val] + '</td>\u000d\n'
+			# html += '<td><input type=\'checkbox\' id=\'' + $.trim(values[0]+values[1]).replace(/ /g,'') + '\'></td>'
+			html += '<td><input class=\'DataTable_displayCheck\' checked type=\'checkbox\' id=\'' + i + '\'></td>'
 			html += '</tr>\u000d\n'
 			i++
 		html += "</tbody>"
@@ -118,7 +142,8 @@ window.Main = class Main
 				"lat": row[@latColumn]
 				"lng": row[@lngColumn]
 			}
-			valuesAr.push(values)
+			if row["Display on Map"] is "yes"
+				valuesAr.push(values)
 		valuesAr
 
 	intializeDefaultMap: =>
@@ -140,3 +165,13 @@ window.Main = class Main
 				position: new google.maps.LatLng(location.lat, location.lng)
 			marker.setMap(map);
 		return
+
+
+window.Utils = class Utils
+	constructor: ->
+
+	@disableScroll: ->
+		$("body").addClass("disableScroll")
+
+	@enableScroll: ->
+		$("body").removeClass("disableScroll")

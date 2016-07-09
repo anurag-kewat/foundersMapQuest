@@ -1,4 +1,5 @@
 @import "base";
+@import "utils";
 
 .Wrapper {
 	background: white;
@@ -14,6 +15,22 @@
 	}
 }
 
+.ContentHeader {
+	// position: relative;
+	@include clearfix;
+	border-bottom: 1px solid $grey3;
+	margin-bottom: 20px;
+
+	h1 {
+		float: left;
+		color: #333;
+	}
+
+	input {
+		float: right;
+	}
+}
+
 .GoogleMap {
 	width: 100%; 
 	height:380px; 
@@ -21,21 +38,22 @@
 }
 
 .UserDetails {
-	background: #f5f5f5;
+	// background: #f5f5f5;
 	min-height: 200px;
 	padding: 20px;
+	// display: none;
 
 	.UserDetails_section {
 		display: none;
 
-		border-bottom: 1px solid #ccc;
-		padding-bottom: 40px;
-		margin-bottom: 40px;
+		// border-bottom: 1px solid #ccc;
+		// padding-bottom: 40px;
+		// margin-bottom: 40px;
 
 		h4 {
 			// margin: 20px;
 			margin-bottom: 20px;
-			color: #999;
+			color: $grey3;
 		}
 
 		&.active {
@@ -50,10 +68,12 @@
 			min-height: 100px; width: 100%;
 		}
 	}
+
+	button {
+		margin-top: 20px;
+	}
 }
 
 .DataTable {
 	overflow-x: scroll;
 }
-
-
