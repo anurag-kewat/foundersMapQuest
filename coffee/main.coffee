@@ -46,6 +46,7 @@ window.Main = class Main
 			@removeItemsWhichNotChecked()
 			@allData = @userInputData
 			@getMarkersOnMap(@map)
+			$("#inputTextArea").val(null)
 			$(@userDetailsSection).removeClass("active")
 			$(".UserDetails_done").addClass("active")
 			setTimeout (=>
@@ -71,9 +72,9 @@ window.Main = class Main
 		html = ""
 		html += "<tr>
 					<td></td>
-					<td>Latitude</td>
-					<td>Longitude</td>
-					<td>Marker Label</td>
+					<td><b>Latitude</b></td>
+					<td><b>Longitude</b></td>
+					<td><b>Marker Label</b></td>
 				</tr>";
 		keysAr = Object.keys(@userInputData[0])
 		for item of keysAr

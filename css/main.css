@@ -86,6 +86,9 @@ input[type="button"] {
     border-color: #333;
     color: #333; }
 
+b, strong {
+  font-weight: bold; }
+
 .Popup .TransparentBg {
   display: none;
   position: fixed;
@@ -134,6 +137,9 @@ input[type="button"] {
   top: 10px; }
   .PanelCloseBtn:hover {
     background-position: -22px 0; }
+
+.FloatRight {
+  float: right; }
 
 /* media query helper (employed to make JS aware of the current MQ) */
 #mqHelper {

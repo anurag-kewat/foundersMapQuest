@@ -60,6 +60,7 @@
           _this.removeItemsWhichNotChecked();
           _this.allData = _this.userInputData;
           _this.getMarkersOnMap(_this.map);
+          $("#inputTextArea").val(null);
           $(_this.userDetailsSection).removeClass("active");
           $(".UserDetails_done").addClass("active");
           return setTimeout((function() {
@@ -93,7 +94,7 @@
       var html, item, keysAr;
       $("#configTable").empty();
       html = "";
-      html += "<tr> <td></td> <td>Latitude</td> <td>Longitude</td> <td>Marker Label</td> </tr>";
+      html += "<tr> <td></td> <td><b>Latitude</b></td> <td><b>Longitude</b></td> <td><b>Marker Label</b></td> </tr>";
       keysAr = Object.keys(this.userInputData[0]);
       for (item in keysAr) {
         html += "<tr><td>" + keysAr[item] + "</td>";
