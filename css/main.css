@@ -117,7 +117,7 @@ b, strong {
       /* MQ Widescreen */
       margin-left: -400px;
       top: 40px;
-      width: 800px;
+      width: 900px;
       padding: 20px; } }
 .Popup .Popup_content {
   overflow: auto; }
@@ -137,6 +137,9 @@ b, strong {
   top: 10px; }
   .PanelCloseBtn:hover {
     background-position: -22px 0; }
+
+.FloatLeft {
+  float: left; }
 
 .FloatRight {
   float: right; }
@@ -207,5 +210,8 @@ b, strong {
 
 .DataTable {
   overflow-x: scroll; }
+  .DataTable img {
+    max-width: 100px;
+    max-height: 100px; }
 
 /*# sourceMappingURL=main.css.map */

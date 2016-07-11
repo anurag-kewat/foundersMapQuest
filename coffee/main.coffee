@@ -22,8 +22,7 @@ window.Main = class Main
 			unless inputText is ""
 				@userInputData = $.csv.toObjects(inputText)
 				@getHtmlForSelectingLatLng()
-				$(@userDetailsSection).removeClass("active")
-				$(".UserDetails_configDetails").addClass("active")
+				@activeRelavantSectionInPopup $(".UserDetails_configDetails")
 
 		$("body").on "click", "#submitConfig", (e) =>
 			@latColumn = $("#configTable").find("input[type='radio'][name='latitude']:checked").attr("value")
@@ -34,25 +33,29 @@ window.Main = class Main
 				@addPropInObjects()
 				html = @generateTable(@userInputData)
 				$("#locationTable").html(html);
-				$(@userDetailsSection).removeClass("active")
-				$(".UserDetails_dataTable").addClass("active")
+				@activeRelavantSectionInPopup $(".UserDetails_dataTable")
 
 		$("body").on "click", ".UserDetails_prev", (e) =>
 			prevSection = $(e.target).parent(@userDetailsSection).prev(@userDetailsSection)
-			$(@userDetailsSection).removeClass("active")
-			prevSection.addClass("active")
+			@activeRelavantSectionInPopup(prevSection)
 
 		$("body").on "click", "#submitData", (e) =>
 			@removeItemsWhichNotChecked()
 			@allData = @userInputData
 			@getMarkersOnMap(@map)
-			$("#inputTextArea").val(null)
-			$(@userDetailsSection).removeClass("active")
-			$(".UserDetails_done").addClass("active")
+			@emptyInputTextArea()
+			@activeRelavantSectionInPopup $(".UserDetails_done")
+
 			setTimeout (=>
 				@popup.closePopup()
 			), 800	
 
+	activeRelavantSectionInPopup: (section) ->
+		$(@userDetailsSection).removeClass("active")
+		section.addClass("active")
+
+	emptyInputTextArea: ->
+		$("#inputTextArea").val(null)
 
 	addPropInObjects: ->
 		for item of @userInputData
@@ -133,7 +136,12 @@ window.Main = class Main
 			for val of values
 				if $.inArray(keysAr[val], @excludeParams) is -1
 					if @checkIfValueIsUrl(values[val])
-						html += '<td><a target=\'_blank\' href=\'' + values[val] + '\'>' + values[val] + '</a></td>\u000d\n'
+
+						if Utils.isImage(values[val]) > -1
+							html += '<td><img src=\'' + values[val] + '\'/></td>\u000d\n'
+						else
+							html += '<td><a target=\'_blank\' href=\'' + values[val] + '\'>' + values[val] + '</a></td>\u000d\n'
+
 					else
 						html += '<td>' + values[val] + '</td>\u000d\n'
 			html += '<td><input class=\'DataTable_displayCheck\' checked type=\'checkbox\' id=\'' + i + '\'></td>'
@@ -180,17 +188,4 @@ window.Main = class Main
 				content: location.label
 			infowindow.open(map, marker);
 		return
-
-
-window.Utils = class Utils
-	constructor: ->
-
-	@disableScroll: ->
-		$("body").addClass("disableScroll")
-
-	@enableScroll: ->
-		$("body").removeClass("disableScroll")
-
-	@isUrlValid: (url) ->
-		return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
 

@@ -28,7 +28,7 @@
 		@include respond-to(widescreen) {
 			margin-left: -400px;
 			top: 40px;
-			width: 800px;
+			width: 900px;
 			padding: 20px;
 		}
 	}
@@ -54,6 +54,10 @@
 	&:hover {
 		background-position: -22px 0;
 	}
+}
+
+.FloatLeft {
+	float: left;
 }
 
 .FloatRight {
