@@ -74,4 +74,28 @@
 		max-width: 100px;
 		max-height: 100px;
 	}
+
+	th {
+		position: relative;
+		padding-right: 20px;
+		cursor: pointer;
+
+		&:after {
+			content: "";
+			display: block;
+			position: absolute; right: 5px; top: 10px;
+		}
+
+		&.headerSortUp:after {
+			@include triangle(5px, top, $grey1);
+			border-bottom: 5px solid $grey1;
+		}
+
+		&.headerSortDown:after {
+			@include triangle(5px, bottom, $grey1);
+			border-top: 5px solid $grey1;
+		}	
+	}
 }
+
+

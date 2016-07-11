@@ -50,7 +50,7 @@ body {
 
 table {
   width: 100%; }
-  table td {
+  table td, table th {
     border: 1px solid #ccc;
     text-align: center;
     padding: 5px; }
@@ -213,5 +213,29 @@ b, strong {
   .DataTable img {
     max-width: 100px;
     max-height: 100px; }
+  .DataTable th {
+    position: relative;
+    padding-right: 20px;
+    cursor: pointer; }
+    .DataTable th:after {
+      content: "";
+      display: block;
+      position: absolute;
+      right: 5px;
+      top: 10px; }
+    .DataTable th.headerSortUp:after {
+      border: 5px solid transparent;
+      border-top-width: 0;
+      border-opposite-position(top): 5px solid #333;
+      width: 0;
+      height: 0;
+      border-bottom: 5px solid #333; }
+    .DataTable th.headerSortDown:after {
+      border: 5px solid transparent;
+      border-bottom-width: 0;
+      border-opposite-position(bottom): 5px solid #333;
+      width: 0;
+      height: 0;
+      border-top: 5px solid #333; }
 
 /*# sourceMappingURL=main.css.map */

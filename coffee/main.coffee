@@ -33,7 +33,9 @@ window.Main = class Main
 			if @latColumn isnt undefined and @lngColumn isnt undefined and @markLabel isnt undefined
 				@addPropInObjects()
 				html = @createTable.generateTable(@userInputData)
-				$("#locationTable").html(html);
+				$("#locationTable").html(html).tablesorter({
+					sortList: [[0,0]]
+				});
 				@activeRelavantSectionInPopup $(".UserDetails_dataTable")
 
 		$("body").on "click", ".UserDetails_prev", (e) =>
@@ -103,7 +105,9 @@ window.Main = class Main
 	getUsersDataOnPageLoad: ->
 		dataArray = @getCSVStoredDataArray()
 		html = @createTable.generateTable(dataArray)
-		$("#defaultDataTable").html(html);
+		$("#defaultDataTable").html(html).tablesorter({
+			sortList: [[0,0]]
+		});
 
 	getGeoLocations: ->
 		valuesAr = []
@@ -160,8 +164,8 @@ class CreateTable
 		html += "<thead><tr>\r\n";
 		for item of keysAr
 			if $.inArray(keysAr[item], @excludeParams) is -1
-				html += "<td>" + keysAr[item] + "</td>\r\n";
-		html += "<td>Active/Inactive</td>"; 
+				html += "<th>" + keysAr[item] + "</th>\r\n";
+		html += "<th>Active/Inactive</th>";
 		html += "</tr></thead>\r\n";
 		return html;
 

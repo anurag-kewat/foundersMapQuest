@@ -16,6 +16,7 @@
       this.excludeParams = ["id", "Id", "Display on Map"];
       this.popup = new Popup(this.userDetailsSection, ".UserDetails_getDetails");
       this.createTable = new CreateTable(this.excludeParams);
+      this.getUsersDataOnPageLoad();
       this.allData = this.getCSVStoredDataArray();
       this.intializeDefaultMap();
     }
@@ -41,7 +42,7 @@
           if (_this.latColumn !== void 0 && _this.lngColumn !== void 0 && _this.markLabel !== void 0) {
             _this.addPropInObjects();
             html = _this.createTable.generateTable(_this.userInputData);
-            $("#locationTable").html(html);
+            $("#locationTable").html(html).tablesorter();
             return _this.activeRelavantSectionInPopup($(".UserDetails_dataTable"));
           }
         };
@@ -133,7 +134,9 @@
       var dataArray, html;
       dataArray = this.getCSVStoredDataArray();
       html = this.createTable.generateTable(dataArray);
-      return $("#defaultDataTable").html(html);
+      return $("#defaultDataTable").html(html).tablesorter({
+        sortList: [[0, 0]]
+      });
     };
 
     Main.prototype.getGeoLocations = function() {
@@ -213,10 +216,10 @@
       html += "<thead><tr>\r\n";
       for (item in keysAr) {
         if ($.inArray(keysAr[item], this.excludeParams) === -1) {
-          html += "<td>" + keysAr[item] + "</td>\r\n";
+          html += "<th>" + keysAr[item] + "</th>\r\n";
         }
       }
-      html += "<td>Active/Inactive</td>";
+      html += "<th>Active/Inactive</th>";
       html += "</tr></thead>\r\n";
       return html;
     };

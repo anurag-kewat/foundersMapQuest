@@ -1,3 +1,4 @@
 Company Name, Founder, City, Country, Postal Code, Street, Photo, Home Page, Garage Latitude, Garage Longitude
 Crest, Anurag kewat, Pune, India, 411017, Magarpatta, http://imgsv.imaging.nikon.com/lineup/lens/zoom/normalzoom/af-s_dx_18-300mmf_35-56g_ed_vr/img/sample/sample4_l.jpg, http://www.google.com, 47.457674, -112.163452
-Crest, Shorma Ashish, Pune, India, 411013, Magarpatta, http://images.fonearena.com/blog/wp-content/uploads/2013/11/Lenovo-p780-camera-sample-10.jpg, http://www.apple.com, 42.457674, -118.163452
+Apple, Shorma Ashish, Pune, India, 411013, Magarpatta, http://images.fonearena.com/blog/wp-content/uploads/2013/11/Lenovo-p780-camera-sample-10.jpg, http://www.apple.com, 42.457674, -118.163452
+Microsoft, Chetan Sharma, Mumbai, India, 411013, Magarpatta, http://images.fonearena.com/blog/wp-content/uploads/2013/11/Lenovo-p780-camera-sample-10.jpg, http://www.hp.com, 44.457674, -114.163452
