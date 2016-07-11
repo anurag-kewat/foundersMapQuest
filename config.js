@@ -8,4 +8,4 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', express.static(__dirname + '/'));
 
 app.listen(4000);
-console.log('Listening.. on port 5050');
+console.log('Listening.. on port 4000');
