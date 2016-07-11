@@ -162,23 +162,23 @@
     };
 
     Main.prototype.gettingRows = function(data, keysAr) {
-      var html, i, val, values;
+      var html, i, item, key;
       html = "";
       html += "<tbody>";
       i = 0;
       while (i <= data.length - 1) {
-        values = Object.values(data[i]);
         html = html + '<tr>\u000d\n';
-        for (val in values) {
-          if ($.inArray(keysAr[val], this.excludeParams) === -1) {
-            if (this.checkIfValueIsUrl(values[val])) {
-              if (Utils.isImage(values[val]) > -1) {
-                html += '<td><img src=\'' + values[val] + '\'/></td>\u000d\n';
+        for (key in keysAr) {
+          item = data[i][keysAr[key]];
+          if ($.inArray(keysAr[key], this.excludeParams) === -1) {
+            if (this.checkIfValueIsUrl(item)) {
+              if (Utils.isImage(item) > -1) {
+                html += '<td><img src=\'' + item + '\'/></td>\u000d\n';
               } else {
-                html += '<td><a target=\'_blank\' href=\'' + values[val] + '\'>' + values[val] + '</a></td>\u000d\n';
+                html += '<td><a target=\'_blank\' href=\'' + item + '\'>' + item + '</a></td>\u000d\n';
               }
             } else {
-              html += '<td>' + values[val] + '</td>\u000d\n';
+              html += '<td>' + item + '</td>\u000d\n';
             }
           }
         }
