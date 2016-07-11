@@ -8,13 +8,14 @@ window.Main = class Main
 		@userInputData = ""
 		@userDetailsSection = ".UserDetails_section"
 
-		# @getUsersDataOnPageLoad()
+		@excludeParams = ["id", "Id", "Display on Map"]
+		@popup = new Popup(@userDetailsSection, ".UserDetails_getDetails")
+		@createTable = new CreateTable(@excludeParams)
+
+		# @getUsersDataOnPageLoad() # to get data from CSV in table
+
 		@allData =  @getCSVStoredDataArray()
 		@intializeDefaultMap()
-
-		@excludeParams = ["id", "Display on Map"]
-
-		@popup = new Popup(@userDetailsSection, ".UserDetails_getDetails")
 
 	init: ->
 		$("body").on "click", "#submitInput", (e) =>
@@ -31,7 +32,7 @@ window.Main = class Main
 
 			if @latColumn isnt undefined and @lngColumn isnt undefined and @markLabel isnt undefined
 				@addPropInObjects()
-				html = @generateTable(@userInputData)
+				html = @createTable.generateTable(@userInputData)
 				$("#locationTable").html(html);
 				@activeRelavantSectionInPopup $(".UserDetails_dataTable")
 
@@ -69,7 +70,6 @@ window.Main = class Main
 			return
 		return
 
-
 	getHtmlForSelectingLatLng: -> 
 		$("#configTable").empty()
 		html = ""
@@ -102,8 +102,47 @@ window.Main = class Main
 
 	getUsersDataOnPageLoad: ->
 		dataArray = @getCSVStoredDataArray()
-		html = @generateTable(dataArray)
-		$("#locationTable").html(html);
+		html = @createTable.generateTable(dataArray)
+		$("#defaultDataTable").html(html);
+
+	getGeoLocations: ->
+		valuesAr = []
+		$.each @allData, (i, row) =>
+			values = {
+				"lat":   row[@latColumn]
+				"lng":   row[@lngColumn]
+				"label": row[@markLabel]
+			}
+			if row["Display on Map"] is "yes"
+				valuesAr.push(values)
+		valuesAr
+
+	intializeDefaultMap: =>
+		google.maps.event.addDomListener window, 'load', @initializeMap
+
+	initializeMap: =>
+		infoWindow = @getGeoLocations()[0]
+		position = new google.maps.LatLng(infoWindow.lat, infoWindow.lng)
+		mapProp = 
+				center: position
+				zoom: 5
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+		@map = new google.maps.Map(document.getElementById("googleMap"), mapProp)
+		@getMarkersOnMap(@map)
+
+	getMarkersOnMap: (map) ->
+		$.each @getGeoLocations(), (i, location) ->	
+			marker = new google.maps.Marker
+				position: new google.maps.LatLng(location.lat, location.lng),
+				# animation: google.maps.Animation.BOUNCE
+			marker.setMap(map);
+			infowindow = new google.maps.InfoWindow
+				content: location.label
+			infowindow.open(map, marker);
+		return
+
+class CreateTable
+	constructor: (@excludeParams) ->
 
 	generateTable: (data) ->
 		requiredHtml = "";
@@ -153,39 +192,4 @@ window.Main = class Main
 	checkIfValueIsUrl: (val) ->
 		Utils.isUrlValid($.trim(val))
 
-	getGeoLocations: ->
-		valuesAr = []
-		$.each @allData, (i, row) =>
-			values = {
-				"lat":   row[@latColumn]
-				"lng":   row[@lngColumn]
-				"label": row[@markLabel]
-			}
-			if row["Display on Map"] is "yes"
-				valuesAr.push(values)
-		valuesAr
-
-	intializeDefaultMap: =>
-		google.maps.event.addDomListener window, 'load', @initializeMap
-
-	initializeMap: =>
-		infoWindow = @getGeoLocations()[0]
-		position = new google.maps.LatLng(infoWindow.lat, infoWindow.lng)
-		mapProp = 
-				center: position
-				zoom: 5
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-		@map = new google.maps.Map(document.getElementById("googleMap"), mapProp)
-		@getMarkersOnMap(@map)
-
-	getMarkersOnMap: (map) ->
-		$.each @getGeoLocations(), (i, location) ->	
-			marker = new google.maps.Marker
-				position: new google.maps.LatLng(location.lat, location.lng),
-				# animation: google.maps.Animation.BOUNCE
-			marker.setMap(map);
-			infowindow = new google.maps.InfoWindow
-				content: location.label
-			infowindow.open(map, marker);
-		return
 
