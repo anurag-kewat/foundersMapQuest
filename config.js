@@ -2,6 +2,11 @@
 var http = require('http');
 var path = require('path');
 var express = require('express');
+
+var exec = require('child_process').exec;
+var cmd = 'coffee --watch --compile --output js/ coffee/';
+exec(cmd)
+
 var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));

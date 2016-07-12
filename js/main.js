@@ -16,7 +16,6 @@
       this.excludeParams = ["id", "Id", "Display on Map"];
       this.popup = new Popup(this.userDetailsSection, ".UserDetails_getDetails");
       this.createTable = new CreateTable(this.excludeParams);
-      this.getUsersDataOnPageLoad();
       this.allData = this.getCSVStoredDataArray();
       this.intializeDefaultMap();
     }
@@ -42,7 +41,9 @@
           if (_this.latColumn !== void 0 && _this.lngColumn !== void 0 && _this.markLabel !== void 0) {
             _this.addPropInObjects();
             html = _this.createTable.generateTable(_this.userInputData);
-            $("#locationTable").html(html).tablesorter();
+            $("#locationTable").html(html).tablesorter({
+              sortList: [[0, 0]]
+            });
             return _this.activeRelavantSectionInPopup($(".UserDetails_dataTable"));
           }
         };
