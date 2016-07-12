@@ -9,4 +9,7 @@ To run this application,
 	And then in directory, run
 	"node config"
 
-(Other way is, simply clone and run "index.html", but this will only work in Firefox.)
+Other way is, simply run "index.html", but this will only work in Firefox.
+
+(For any modification in SCSS/CSS, you need to install SASS and run watch command, refer link below:
+http://sass-lang.com/)
