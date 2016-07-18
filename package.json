@@ -1,0 +1,16 @@
+{
+  "name": "FoundersMapQuest",
+  "version": "0.0.1",
+  "description": "Founders map quest, is a small web application to show different ideas users have, in an interactive map.",
+  "main": "config.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:anuriqs/foundersMapQuest.git"
+  },
+  "author": "Anurag Kewat <anuragkewat@gmail.com>",
+  "dependencies": {
+    "http": "*",
+    "express": "*",
+    "path": "*"
+  }
+}
