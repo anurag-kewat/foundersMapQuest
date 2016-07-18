@@ -2,15 +2,21 @@
 
 Founders map quest, is a small web application to show different ideas users have, in an interactive map.
 
+## Code Stack
+* HTML/CSS3
+* CoffeeScipt
+* Node JS
+
 ## Installation
 
 ### Dependencies
 
-Install Node.js, refer link below: https://nodejs.org/en/download/
-	Run, "npm install" (which will install all the dependencies)
+Install Node.js, refer link below: 
+https://nodejs.org/en/download/
+> Run, "npm install" (which will install all the dependencies)
 
 ### Usage
-	Run "node build" (to run the application)
+> Run "node build" (to run the application)
 
 Other way is, simply run "index.html", but this will only work in Firefox.
 
