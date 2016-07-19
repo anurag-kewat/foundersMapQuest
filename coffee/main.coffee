@@ -1,6 +1,7 @@
 window.Main = class Main
   constructor: () ->
     @map
+    @latLngArray = []
     @latColumn = "Garage Latitude"
     @lngColumn = "Garage Longitude"
     @markLabel = "Founder"
@@ -33,25 +34,29 @@ window.Main = class Main
       if @latColumn isnt undefined and @lngColumn isnt undefined and @markLabel isnt undefined
         @addPropInObjects()
         html = @createTable.generateTable(@userInputData)
+        $(".DataTable").addClass("Show")
         $("#locationTable").html(html).tablesorter({
           sortList: [[0,0]]
         })
-        @activeRelavantSectionInPopup $(".UserDetails_dataTable")
+        @allData = @userInputData
+        @getMarkersOnMap(@map)
+        @emptyInputTextArea()
+        @activeRelavantSectionInPopup $(".UserDetails_done")
+
+        setTimeout (=>
+          @popup.closePopup()
+        ), 800
 
     $("body").on "click", ".UserDetails_prev", (e) =>
       prevSection = $(e.target).parent(@userDetailsSection).prev(@userDetailsSection)
       @activeRelavantSectionInPopup(prevSection)
 
-    $("body").on "click", "#submitData", (e) =>
+    $("body").on "click", "#submitTable", (e) =>
       @removeItemsWhichNotChecked()
       @allData = @userInputData
+      @removeMarkers()
       @getMarkersOnMap(@map)
-      @emptyInputTextArea()
-      @activeRelavantSectionInPopup $(".UserDetails_done")
-
-      setTimeout (=>
-        @popup.closePopup()
-      ), 800
+      $(e.target).next("span").show().fadeOut(1000)
 
   activeRelavantSectionInPopup: (section) ->
     $(@userDetailsSection).removeClass("active")
@@ -66,9 +71,12 @@ window.Main = class Main
       @userInputData[item]["Display on Map"] = "yes"
 
   removeItemsWhichNotChecked: ->
-    $(".DataTable_displayCheck").not(":checked").each (i, check) =>
+    $(".DataTable_displayCheck").each (i, check) =>
+      display = "yes"
+      unless $(check).is(":checked")
+        display = "no"
       disableItem =  $(check).attr("id")
-      @userInputData[disableItem]["Display on Map"] = "no"
+      @userInputData[disableItem]["Display on Map"] = display
       return
     return
 
@@ -135,15 +143,21 @@ window.Main = class Main
     @getMarkersOnMap(@map)
 
   getMarkersOnMap: (map) ->
-    $.each @getGeoLocations(), (i, location) ->
+    @latLngArray = []
+    $.each @getGeoLocations(), (i, location) =>
       marker = new google.maps.Marker
         position: new google.maps.LatLng(location.lat, location.lng),
         # animation: google.maps.Animation.BOUNCE
       marker.setMap(map)
+      @latLngArray.push(marker)
       infowindow = new google.maps.InfoWindow
         content: location.label
       infowindow.open(map, marker)
     return
+
+  removeMarkers: ->
+    for mark of @latLngArray
+      @latLngArray[mark].setMap(null)
 
 class CreateTable
   constructor: (@excludeParams) ->

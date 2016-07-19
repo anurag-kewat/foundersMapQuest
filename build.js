@@ -4,7 +4,7 @@ var path = require('path');
 var express = require('express');
 
 var exec = require('child_process').exec;
-var cmd = 'coffee --watch --compile --output js/ coffee/';
+var cmd = 'coffee --watch --join js/bundle.js --compile coffee/*.coffee';
 exec(cmd)
 
 var app = express();

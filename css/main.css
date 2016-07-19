@@ -41,6 +41,12 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+/* Media queries
+---------------------------------------------------------- */
+/* Mixins
+---------------------------------------------------------- */
+/* Default stylings
+---------------------------------------------------------- */
 body {
   background: #eee;
   font-family: Calibri, Candara, Segoe, "Segoe UI";
@@ -159,6 +165,8 @@ b, strong {
       /* MQ Widescreen */
       height: 2px; } }
 
+/* Main wrapper
+---------------------------------------------------------- */
 .Wrapper {
   background: white;
   margin: 0 auto;
@@ -172,6 +180,8 @@ b, strong {
       padding-bottom: 60px;
       width: 1000px; } }
 
+/* Content Header
+---------------------------------------------------------- */
 .ContentHeader {
   zoom: 1;
   border-bottom: 1px solid #999;
@@ -187,32 +197,31 @@ b, strong {
   .ContentHeader input {
     float: right; }
 
+/* Map
+---------------------------------------------------------- */
 .GoogleMap {
   width: 100%;
   height: 380px;
   margin-bottom: 50px; }
 
-.UserDetails {
-  min-height: 200px;
-  padding: 20px; }
-  .UserDetails .UserDetails_section {
-    display: none; }
-    .UserDetails .UserDetails_section h4 {
-      margin-bottom: 20px;
-      color: #999; }
-    .UserDetails .UserDetails_section.active {
-      display: block; }
-  .UserDetails .UserDetails_getDetails textarea {
-    min-height: 100px;
-    width: 100%; }
-  .UserDetails button {
-    margin-top: 20px; }
-
+/* Data table
+---------------------------------------------------------- */
 .DataTable {
-  overflow-x: scroll; }
+  overflow-x: scroll;
+  display: none; }
+  .DataTable.Show {
+    display: block; }
+  .DataTable .DataTable_entry {
+    display: none;
+    float: right;
+    color: red;
+    font-size: 17px;
+    margin: 27px 20px 0 0; }
+  .DataTable button {
+    margin-top: 20px; }
   .DataTable img {
-    max-width: 100px;
-    max-height: 100px; }
+    max-width: 70px;
+    max-height: 70px; }
   .DataTable th {
     position: relative;
     padding-right: 20px;
@@ -237,5 +246,23 @@ b, strong {
       width: 0;
       height: 0;
       border-top: 5px solid #333; }
+
+/* User Section
+---------------------------------------------------------- */
+.UserDetails {
+  min-height: 200px;
+  padding: 20px; }
+  .UserDetails .UserDetails_section {
+    display: none; }
+    .UserDetails .UserDetails_section h4 {
+      margin-bottom: 20px;
+      color: #999; }
+    .UserDetails .UserDetails_section.active {
+      display: block; }
+  .UserDetails .UserDetails_getDetails textarea {
+    min-height: 100px;
+    width: 100%; }
+  .UserDetails button {
+    margin-top: 20px; }
 
 /*# sourceMappingURL=main.css.map */

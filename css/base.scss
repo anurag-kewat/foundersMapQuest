@@ -1,3 +1,4 @@
+// Fonts
 $font-base: Calibri, Candara, Segoe, 'Segoe UI';
 $font-georgia: Georgia, "New Century Schoolbook", "Nimbus Roman No9 L", serif;
 $sepiaBg: #f0e2c7;
@@ -8,12 +9,15 @@ $size17: 17px;
 $size13: 13px;
 $size9: 9px;
 
+// Color codes
 $grey1: #333;
 $grey2: #666;
 $grey3: #999;
 $grey4: #ccc;
 $grey5: #eee;
 
+/* Media queries
+---------------------------------------------------------- */
 @mixin respond-to($type, $media:none) {
 	$ielt9:	false !default; // !default means it will be overwritten if defined in IE specific stylesheet
 
@@ -39,6 +43,8 @@ $grey5: #eee;
 	}
 }
 
+/* Mixins
+---------------------------------------------------------- */
 @mixin clearfix {
 	zoom: 1;
 
@@ -60,6 +66,8 @@ $grey5: #eee;
     height: 0;
 }
 
+/* Default stylings
+---------------------------------------------------------- */
 body {
 	background: #eee;
 	font-family: $font-base;
