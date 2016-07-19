@@ -12,9 +12,6 @@ window.Popup = class Popup
     $(".PanelCloseBtn").click =>
       @closePopup()
 
-    $(document).on "keydown", (e) =>
-      @closePopup() if(e.keyCode is 27)
-
     @setPopupDimensions()
     $(window).on "resize", =>
       @setPopupDimensions()

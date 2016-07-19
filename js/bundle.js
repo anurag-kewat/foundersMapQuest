@@ -301,13 +301,6 @@
           return _this.closePopup();
         };
       })(this));
-      $(document).on("keydown", (function(_this) {
-        return function(e) {
-          if (e.keyCode === 27) {
-            return _this.closePopup();
-          }
-        };
-      })(this));
       this.setPopupDimensions();
       $(window).on("resize", (function(_this) {
         return function() {
