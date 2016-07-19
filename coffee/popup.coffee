@@ -34,7 +34,7 @@ window.Popup = class Popup
     else
       $(".Popup_content").css("max-height", screenHeight - 160)
 
-  closePopup: =>
+  closePopup: ->
     $(".Popup").find(".TransparentBg").fadeOut(200, ->
       complete: $(".Popup").find(".Popup_container").removeClass("Show").addClass("jsRemoveShow")
       )
