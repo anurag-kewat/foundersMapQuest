@@ -122,11 +122,9 @@
         async: false,
         url: "data/sample.csv",
         dataType: "text",
-        success: (function(_this) {
-          return function(csvdata) {
-            return dataArray = $.csv.toObjects(csvdata);
-          };
-        })(this)
+        success: function(csvdata) {
+          return dataArray = $.csv.toObjects(csvdata);
+        }
       });
       return dataArray;
     };

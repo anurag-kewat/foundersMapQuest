@@ -35,7 +35,7 @@ window.Main = class Main
         html = @createTable.generateTable(@userInputData)
         $("#locationTable").html(html).tablesorter({
           sortList: [[0,0]]
-        });
+        })
         @activeRelavantSectionInPopup $(".UserDetails_dataTable")
 
     $("body").on "click", ".UserDetails_prev", (e) =>
@@ -51,7 +51,7 @@ window.Main = class Main
 
       setTimeout (=>
         @popup.closePopup()
-      ), 800  
+      ), 800
 
   activeRelavantSectionInPopup: (section) ->
     $(@userDetailsSection).removeClass("active")
@@ -72,7 +72,7 @@ window.Main = class Main
       return
     return
 
-  getHtmlForSelectingLatLng: -> 
+  getHtmlForSelectingLatLng: ->
     $("#configTable").empty()
     html = ""
     html += "<tr>
@@ -83,11 +83,11 @@ window.Main = class Main
         </tr>";
     keysAr = Object.keys(@userInputData[0])
     for item of keysAr
-      html += "<tr><td>" + keysAr[item] + "</td>";
-      html += "<td><input type='radio' name='latitude' value='" + keysAr[item] + "' /></td>";
-      html += "<td><input type='radio' name='longitude' value='" + keysAr[item] + "' /></td>";
-      html += "<td><input type='radio' name='markerLabel' value='" + keysAr[item] + "' /></td>";
-      html += "</tr>\r\n";
+      html += "<tr><td>" + keysAr[item] + "</td>"
+      html += "<td><input type='radio' name='latitude' value='" + keysAr[item] + "' /></td>"
+      html += "<td><input type='radio' name='longitude' value='" + keysAr[item] + "' /></td>"
+      html += "<td><input type='radio' name='markerLabel' value='" + keysAr[item] + "' /></td>"
+      html += "</tr>\r\n"
     $(html).appendTo("#configTable")
 
   getCSVStoredDataArray: ->
@@ -97,17 +97,17 @@ window.Main = class Main
       async: false,
       url: "data/sample.csv",
       dataType: "text",
-      success: (csvdata) =>
+      success: (csvdata) ->
         dataArray = $.csv.toObjects(csvdata)
     )
-    dataArray;
+    dataArray
 
   getUsersDataOnPageLoad: ->
     dataArray = @getCSVStoredDataArray()
     html = @createTable.generateTable(dataArray)
     $("#defaultDataTable").html(html).tablesorter({
       sortList: [[0,0]]
-    });
+    })
 
   getGeoLocations: ->
     valuesAr = []
@@ -127,7 +127,7 @@ window.Main = class Main
   initializeMap: =>
     infoWindow = @getGeoLocations()[0]
     position = new google.maps.LatLng(infoWindow.lat, infoWindow.lng)
-    mapProp = 
+    mapProp =
         center: position
         zoom: 5
         mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -135,39 +135,39 @@ window.Main = class Main
     @getMarkersOnMap(@map)
 
   getMarkersOnMap: (map) ->
-    $.each @getGeoLocations(), (i, location) -> 
+    $.each @getGeoLocations(), (i, location) ->
       marker = new google.maps.Marker
         position: new google.maps.LatLng(location.lat, location.lng),
         # animation: google.maps.Animation.BOUNCE
-      marker.setMap(map);
+      marker.setMap(map)
       infowindow = new google.maps.InfoWindow
         content: location.label
-      infowindow.open(map, marker);
+      infowindow.open(map, marker)
     return
 
 class CreateTable
   constructor: (@excludeParams) ->
 
   generateTable: (data) ->
-    requiredHtml = "";
+    requiredHtml = ""
 
     if typeof(data[0]) is 'undefined'
-      return null;
+      return null
 
     keysAr = Object.keys(data[0])
     requiredHtml += @gettingHeader(keysAr) # getting header
     requiredHtml += @gettingRows(data, keysAr) # getting rows
-    return requiredHtml;
+    return requiredHtml
 
   gettingHeader: (keysAr) ->
     html = ""
-    html += "<thead><tr>\r\n";
+    html += "<thead><tr>\r\n"
     for item of keysAr
       if $.inArray(keysAr[item], @excludeParams) is -1
-        html += "<th>" + keysAr[item] + "</th>\r\n";
-    html += "<th>Active/Inactive</th>";
-    html += "</tr></thead>\r\n";
-    return html;
+        html += "<th>" + keysAr[item] + "</th>\r\n"
+    html += "<th>Active/Inactive</th>"
+    html += "</tr></thead>\r\n"
+    return html
 
   gettingRows: (data, keysAr) ->
     html = ""
@@ -191,7 +191,7 @@ class CreateTable
       html += '</tr>\u000d\n'
       i++
     html += "</tbody>"
-    return html;
+    return html
 
   checkIfValueIsUrl: (val) ->
     Utils.isUrlValid($.trim(val))
