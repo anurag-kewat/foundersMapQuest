@@ -223,23 +223,25 @@ b, strong {
     max-width: 70px;
     max-height: 70px; }
   .DataTable th {
-    position: relative;
-    padding-right: 20px;
     cursor: pointer; }
-    .DataTable th:after {
-      content: "";
-      display: block;
-      position: absolute;
-      right: 5px;
-      top: 10px; }
-    .DataTable th.headerSortUp:after {
+    .DataTable th span {
+      display: inline-block;
+      padding-right: 20px;
+      position: relative; }
+      .DataTable th span:after {
+        content: "";
+        display: block;
+        position: absolute;
+        right: 5px;
+        top: 3px; }
+    .DataTable th.headerSortUp span:after {
       border: 5px solid transparent;
       border-top-width: 0;
       border-opposite-position(top): 5px solid #333;
       width: 0;
       height: 0;
       border-bottom: 5px solid #333; }
-    .DataTable th.headerSortDown:after {
+    .DataTable th.headerSortDown span:after {
       border: 5px solid transparent;
       border-bottom-width: 0;
       border-opposite-position(bottom): 5px solid #333;
@@ -264,5 +266,3 @@ b, strong {
     width: 100%; }
   .UserDetails button {
     margin-top: 20px; }
-
-/*# sourceMappingURL=main.css.map */

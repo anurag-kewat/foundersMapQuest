@@ -5,6 +5,7 @@ window.Main = class Main
     @latColumn = "Garage Latitude"
     @lngColumn = "Garage Longitude"
     @markLabel = "Founder"
+    @flag = 0
 
     @userInputData = ""
     @userDetailsSection = ".UserDetails_section"
@@ -35,10 +36,10 @@ window.Main = class Main
         @addPropInObjects()
         html = @createTable.generateTable(@userInputData)
         $(".DataTable").addClass("Show")
-        $("#locationTable").html(html).tablesorter({
-          sortList: [[0,0]]
-        })
+        $("#locationTable").html(html).tablesorter()
         @allData = @userInputData
+        if @flag > 0
+          @removeMarkers()
         @getMarkersOnMap(@map)
         @emptyInputTextArea()
         @activeRelavantSectionInPopup $(".UserDetails_done")
@@ -46,6 +47,7 @@ window.Main = class Main
         setTimeout (=>
           @popup.closePopup()
         ), 800
+        @flag++
 
     $("body").on "click", ".UserDetails_prev", (e) =>
       prevSection = $(e.target).parent(@userDetailsSection).prev(@userDetailsSection)
@@ -178,7 +180,7 @@ class CreateTable
     html += "<thead><tr>\r\n"
     for item of keysAr
       if $.inArray(keysAr[item], @excludeParams) is -1
-        html += "<th>" + keysAr[item] + "</th>\r\n"
+        html += "<th><span>" + keysAr[item] + "</span></th>\r\n"
     html += "<th>Active/Inactive</th>"
     html += "</tr></thead>\r\n"
     return html

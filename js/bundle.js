@@ -12,6 +12,7 @@
       this.latColumn = "Garage Latitude";
       this.lngColumn = "Garage Longitude";
       this.markLabel = "Founder";
+      this.flag = 0;
       this.userInputData = "";
       this.userDetailsSection = ".UserDetails_section";
       this.excludeParams = ["id", "Id", "Display on Map"];
@@ -43,16 +44,18 @@
             _this.addPropInObjects();
             html = _this.createTable.generateTable(_this.userInputData);
             $(".DataTable").addClass("Show");
-            $("#locationTable").html(html).tablesorter({
-              sortList: [[0, 0]]
-            });
+            $("#locationTable").html(html).tablesorter();
             _this.allData = _this.userInputData;
+            if (_this.flag > 0) {
+              _this.removeMarkers();
+            }
             _this.getMarkersOnMap(_this.map);
             _this.emptyInputTextArea();
             _this.activeRelavantSectionInPopup($(".UserDetails_done"));
-            return setTimeout((function() {
+            setTimeout((function() {
               return _this.popup.closePopup();
             }), 800);
+            return _this.flag++;
           }
         };
       })(this));
@@ -237,7 +240,7 @@
       html += "<thead><tr>\r\n";
       for (item in keysAr) {
         if ($.inArray(keysAr[item], this.excludeParams) === -1) {
-          html += "<th>" + keysAr[item] + "</th>\r\n";
+          html += "<th><span>" + keysAr[item] + "</span></th>\r\n";
         }
       }
       html += "<th>Active/Inactive</th>";
