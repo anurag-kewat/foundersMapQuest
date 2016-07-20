@@ -5,7 +5,7 @@ Founders map quest, is a small web application to show different ideas users hav
 ## Code Stack
 * HTML/HTML5
 * SASS 3.4.22
-* CoffeeScipt 1.10.0
+* CoffeeScript 1.10.0
 * Node JS v6.2.2
 
 ## Installation
